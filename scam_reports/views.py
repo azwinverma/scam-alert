@@ -16,8 +16,20 @@ def addScamReport(self, request, *args, **kwargs):
         serializer = ScamReportSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # Wrap the response in a custom format
+            response_data = {
+                "status": "success",
+                "message": "Scam report created successfully",
+                "data": serializer.data
+            }
+            return Response(response_data, status=status.HTTP_201_CREATED)
+        # Handle validation errors
+        response_data = {
+            "status": "error",
+            "message": "Invalid data",
+            "errors": serializer.errors
+        }
+        return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 class ScamReportListCreateView(generics.ListCreateAPIView):
     queryset = ScamReport.objects.all()
