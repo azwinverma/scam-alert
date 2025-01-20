@@ -16,6 +16,7 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+from datetime import timedelta
 
 
 MEDIA_URL = '/media/'
@@ -44,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
      'rest_framework', 
     'scam_reports',  # Add your scam_reports app here
+        'rest_framework_simplejwt',
+
 ]
 
 MIDDLEWARE = [
@@ -127,3 +130,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+# Configure JWT settings
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=365),  # Access token expires in 7 days
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),  # Refresh token expires in 30 days
+    'ROTATE_REFRESH_TOKENS': True,  # Issue a new refresh token on each refresh
+    'BLACKLIST_AFTER_ROTATION': True,  # Blacklist old refresh tokens
+}
