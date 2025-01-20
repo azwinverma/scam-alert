@@ -6,6 +6,16 @@ class ScamReportSerializer(serializers.ModelSerializer):
         model = ScamReport
         fields = '__all__'
 
+    def validate_title(self, value):
+        if not value:
+            raise serializers.ValidationError("Title is required.")
+        return value
+
+    def validate_description(self, value):
+        if not value:
+            raise serializers.ValidationError("Description is required.")
+        return value
+
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment

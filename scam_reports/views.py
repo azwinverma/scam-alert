@@ -3,6 +3,21 @@ from rest_framework import generics
 from .models import ScamReport, Comment, Reaction
 from .serializers import ScamReportSerializer, CommentSerializer, ReactionSerializer
 from .forms import CommentForm, ReactionForm
+from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
+from rest_framework import status
+
+
+class ScamReportCreateView(APIView):
+    parser_classes = (MultiPartParser, FormParser)  # To handle file uploads
+
+def addScamReport(self, request, *args, **kwargs):
+        serializer = ScamReportSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ScamReportListCreateView(generics.ListCreateAPIView):
     queryset = ScamReport.objects.all()

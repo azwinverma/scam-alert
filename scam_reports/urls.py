@@ -3,7 +3,9 @@ from .views import ScamReportListCreateView, ScamReportDetailView, CommentCreate
 from . import views
 
 urlpatterns = [
-    path('scams/', ScamReportListCreateView.as_view(), name='scam-list-create'),
+    path('scams/', ScamReportListCreateView.as_view(), name='scam-list'),
+        path('scams/add/', views.addScamReport, name='scam-list-create'),
+
     path('scams/<int:pk>/', ScamReportDetailView.as_view(), name='scam-detail'),
     # path('comments/', CommentCreateView.as_view(), name='comment-create'),
     # path('reactions/', ReactionCreateView.as_view(), name='reaction-create'),
