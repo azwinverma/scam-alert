@@ -30,10 +30,19 @@ def addScamReport(self, request, *args, **kwargs):
             "errors": serializer.errors
         }
         return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        # Wrap the response in a custom format
+        response_data = {
+            "status": "success",
+            "message": "Scam reports retrieved successfully",
+            "data": response.data
+        }
+        return Response(response_data)
 
-class ScamReportListCreateView(generics.ListCreateAPIView):
-    queryset = ScamReport.objects.all()
-    serializer_class = ScamReportSerializer
+# class ScamReportListCreateView(generics.ListCreateAPIView):
+#     queryset = ScamReport.objects.all()
+#     serializer_class = ScamReportSerializer
 
 class ScamReportDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = ScamReport.objects.all()

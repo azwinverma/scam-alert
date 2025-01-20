@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import ScamReportListCreateView, ScamReportDetailView, CommentCreateView, ReactionCreateView
+from .views import  ScamReportDetailView, CommentCreateView, ReactionCreateView
 from . import views
 
 urlpatterns = [
-    path('scams/', ScamReportListCreateView.as_view(), name='scam-list'),
+    path('scams/',views.list, name='scam-list'),
         path('scams/add/', views.addScamReport, name='scam-list-create'),
 
     path('scams/<int:pk>/', ScamReportDetailView.as_view(), name='scam-detail'),
