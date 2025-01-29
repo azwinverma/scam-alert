@@ -33,11 +33,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://scamalert.pythonanywhere.com/',  # Add your domain(s) here
-]
-CSRF_COOKIE_SECURE = True  # Ensure CSRF cookie is only sent over HTTPS
-CSRF_USE_SESSIONS = False  # Use cookies for CSRF tokens (default)
 
 
 # Application definition
@@ -58,7 +53,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -141,9 +135,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',  # Adjust as needed
-    ),
 }
 
 # Configure JWT settings

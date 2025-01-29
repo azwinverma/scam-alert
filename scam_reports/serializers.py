@@ -36,20 +36,20 @@ class ReactionSerializer(serializers.ModelSerializer):
 class ScamReportImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScamReportImage
-        fields = ['id', 'image']
+        fields = ['image']
 
 
 class ScamReportSerializer(serializers.ModelSerializer):
      comments = CommentSerializer(many=True, read_only=True)
      reactions = ReactionSerializer(many=True, read_only=True)
-     reported_by = serializers.StringRelatedField()
+     reported_by = serializers.StringRelatedField(read_only=True)
     #  links = ScamReportLinkSerializer(many=True, read_only=True)
-     images = ScamReportImageSerializer(many=True, read_only=True)
+     images = ScamReportImageSerializer(many=True, read_only=True, source="scamreportimage_set")
 
      class Meta:
         model = ScamReport
         fields = [
-            'id', 'title', 'description', 'image', 'created_at', 'updated_at',
+            'id', 'title', 'description', 'created_at', 'updated_at',
             'reported_by', 'comments', 'reactions', 'images'
         ]
 

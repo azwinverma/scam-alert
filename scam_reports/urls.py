@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ScamReportListCreateView, ScamReportDetailView, CommentCreateView, ReactionCreateView
+from .views import ScamReportListCreateView, ScamReportDetailView, CommentCreateView, ReactionCreateView, addScamReport
 from . import views
 from .views import UserRegistrationView,CustomTokenObtainPairView
 from .views import UserLoginView
@@ -12,7 +12,7 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('scams/', ScamReportListCreateView.as_view(), name='scam-list'),
-        path('scams/add/', views.addScamReport, name='scam-list-create'),
+        path('scams/add/', addScamReport, name='addScamReport'),
 
     path('scams/<int:pk>/', ScamReportDetailView.as_view(), name='scam-detail'),
     # path('comments/', CommentCreateView.as_view(), name='comment-create'),
