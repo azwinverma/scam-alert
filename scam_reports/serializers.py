@@ -50,7 +50,7 @@ class ScamReportSerializer(serializers.ModelSerializer):
         model = ScamReport
         fields = [
             'id', 'title', 'description', 'image', 'created_at', 'updated_at',
-            'reported_by', 'comments', 'reactions', 'links', 'images'
+            'reported_by', 'comments', 'reactions', 'images'
         ]
 
      def validate_title(self, value):
