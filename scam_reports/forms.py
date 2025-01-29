@@ -11,3 +11,5 @@ class ReactionForm(forms.ModelForm):
     class Meta:
         model = Reaction
         fields = ['reaction_type']
+
+
