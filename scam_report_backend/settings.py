@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-siceg4bt%d38&z*+n42)tz04)tzy$1hd&!tc_(g$u(lm@e3ph=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://scamalert.pythonanywhere.com/']
 
 
 
