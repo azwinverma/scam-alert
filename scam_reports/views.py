@@ -32,7 +32,7 @@ def addScamReport(self, request, *args, **kwargs):
         scam_report = ScamReport.objects.create(
             title=title,
             description=description,
-            reported_by=request.user
+            # reported_by=request.user
         )
 
         # Add links
