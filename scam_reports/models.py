@@ -7,8 +7,21 @@ class ScamReport(models.Model):
     reported_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to='scam_images/', null=True, blank=True)  # Add this line
+    # image = models.ImageField(upload_to='scam_images/', null=True, blank=True)  # Add this line
 
+# class ScamReportLink(models.Model):
+#     scam_report = models.ForeignKey(ScamReport, related_name='links', on_delete=models.CASCADE)
+#     url = models.URLField()
+
+#     def __str__(self):
+#         return self.url
+
+class ScamReportImage(models.Model):
+    scam_report = models.ForeignKey(ScamReport, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='scam_images/')
+
+    def __str__(self):
+        return self.image.url
 
 class Comment(models.Model):
     scam_report = models.ForeignKey(ScamReport, on_delete=models.CASCADE, related_name='comments')
@@ -24,6 +37,8 @@ class Reaction(models.Model):
     REACTION_CHOICES = [
         ('like', 'Like'),
         ('dislike', 'Dislike'),
+        ('angry','Angry'),
+        ('sad','Sad'),
     ]
     scam_report = models.ForeignKey(ScamReport, on_delete=models.CASCADE, related_name='reactions')
     # user = models.ForeignKey(User, on_delete=models.CASCADE)

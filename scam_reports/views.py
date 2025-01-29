@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from .models import ScamReport, Comment, Reaction
-from .serializers import ScamReportSerializer, CommentSerializer, ReactionSerializer
+from .serializers import ScamReportSerializer, CommentSerializer, ReactionSerializer,ScamReportImage
 from .forms import CommentForm, ReactionForm
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -18,23 +18,54 @@ class ScamReportCreateView(APIView):
     parser_classes = (MultiPartParser, FormParser)  # To handle file uploads
 
 def addScamReport(self, request, *args, **kwargs):
-        serializer = ScamReportSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            # Wrap the response in a custom format
-            response_data = {
-                "status": "success",
-                "message": "Scam report created successfully",
-                "data": serializer.data
-            }
-            return Response(response_data, status=status.HTTP_201_CREATED)
-        # Handle validation errors
-        response_data = {
-            "status": "error",
-            "message": "Invalid data",
-            "errors": serializer.errors
-        }
-        return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        title = request.data.get('title')
+        description = request.data.get('description')
+        # links = request.data.getlist('links[]')  # List of links
+        images = request.FILES.getlist('images')  # List of images
+
+        if not title or not description:
+            return Response({
+                "status": "error",
+                "message": "Title and description are required."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        scam_report = ScamReport.objects.create(
+            title=title,
+            description=description,
+            reported_by=request.user
+        )
+
+        # Add links
+        # for link in links:
+        #     ScamReportLink.objects.create(scam_report=scam_report, url=link)
+
+        # Add images
+        for image in images:
+            ScamReportImage.objects.create(scam_report=scam_report, image=image)
+
+        serializer = ScamReportSerializer(scam_report)
+        return Response({
+            "status": "success",
+            "message": "Scam report created successfully.",
+            "data": serializer.data
+        }, status=status.HTTP_201_CREATED)
+        # serializer = ScamReportSerializer(data=request.data)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     # Wrap the response in a custom format
+        #     response_data = {
+        #         "status": "success",
+        #         "message": "Scam report created successfully",
+        #         "data": serializer.data
+        #     }
+        #     return Response(response_data, status=status.HTTP_201_CREATED)
+        # # Handle validation errors
+        # response_data = {
+        #     "status": "error",
+        #     "message": "Invalid data",
+        #     "errors": serializer.errors
+        # }
+        # return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 class ScamReportListCreateView(generics.ListCreateAPIView):
     queryset = ScamReport.objects.all()
@@ -163,6 +194,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             "message": "Invalid credentials",
             "errors": response.data
         }, status=status.HTTP_400_BAD_REQUEST)
+
+
     
 # class UserRegistrationView(generics.CreateAPIView):
 #     serializer_class = UserRegistrationSerializer

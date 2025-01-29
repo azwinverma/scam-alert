@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import ScamReport, Comment, Reaction
+from .models import ScamReport, Comment, Reaction, ScamReportImage
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,17 +28,29 @@ class ReactionSerializer(serializers.ModelSerializer):
         model = Reaction
         fields = ['id', 'reaction_type', 'reacted_by','scam_report']
 
+# class ScamReportLinkSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ScamReportLink
+#         fields = ['id', 'url']
+
+class ScamReportImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScamReportImage
+        fields = ['id', 'image']
+
 
 class ScamReportSerializer(serializers.ModelSerializer):
      comments = CommentSerializer(many=True, read_only=True)
      reactions = ReactionSerializer(many=True, read_only=True)
      reported_by = serializers.StringRelatedField()
+    #  links = ScamReportLinkSerializer(many=True, read_only=True)
+     images = ScamReportImageSerializer(many=True, read_only=True)
 
      class Meta:
         model = ScamReport
         fields = [
             'id', 'title', 'description', 'image', 'created_at', 'updated_at',
-            'reported_by', 'comments', 'reactions'
+            'reported_by', 'comments', 'reactions', 'links', 'images'
         ]
 
      def validate_title(self, value):
