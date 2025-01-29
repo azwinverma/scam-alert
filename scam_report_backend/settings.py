@@ -33,6 +33,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://scamalert.pythonanywhere.com/',  # Add your domain(s) here
+]
+CSRF_COOKIE_SECURE = True  # Ensure CSRF cookie is only sent over HTTPS
+CSRF_USE_SESSIONS = False  # Use cookies for CSRF tokens (default)
+
 
 # Application definition
 
